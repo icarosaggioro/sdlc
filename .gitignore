@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Installer self-test and backups
+tools/_selftest/
+*.bak
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
