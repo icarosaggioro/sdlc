@@ -26,7 +26,7 @@ Project-specific skills live next to the `sdlc-*` ones and keep their own names.
 
 ## Updating
 
-Copy the newer package over the old one. Keep your `project.md`. Check `.agents/SDLC_VERSION` to see which version a repo carries.
+From the SDLC compendium repository, run `python tools/install_package.py <this-repo>` (use `python3` on Linux and macOS) for a dry run, then add `--apply`. It replaces only package-owned files and keeps your `project.md`. Check `.agents/SDLC_VERSION` to see which version a repo carries.
 
 ## Where to read more
 
