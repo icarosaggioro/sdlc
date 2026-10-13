@@ -1,6 +1,6 @@
 # SDLC Evidence Survey: Index and Method
 
-Survey date: 2026-10-12. Phase 1 of 2: evidence gathering. Phase 2 (consolidation into guides and references) has not started.
+Survey date: 2026-10-12. This is the record of Phase 1 (evidence gathering). Phase 2, the consolidation into guides, skills, and references, is the `package/` folder at the repository root.
 
 ## Scope
 
@@ -15,7 +15,7 @@ Working trees were clean (`git status --short` empty) when surveyed.
 ## Method and Constraints
 
 - **Read-only on projects.** Only `ls`, `find`, `git log`, `git ls-files`, `git status`, `cat`, `head`, `grep`, and `wc` were used against the project folders. No tests, builds, installs, or formatters were run, because they write caches or artifacts inside the projects. Test counts below come from grepping source, not from executing suites.
-- **Writes only here.** All outputs are under `C:\WebApps\sagglabs-sdlc\evidence\`.
+- **Writes only here.** All outputs were written under this repository (this folder is `docs/background/evidence/`).
 - **Evidence is cited by file path** relative to each project root. Claims marked *unverified* were read from docs and not confirmed in code or CI execution.
 - **Language.** These files are in English, following the EN-INT convention that two of the three projects already use for technical documents. Chat stays in Portuguese.
 

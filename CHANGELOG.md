@@ -1,6 +1,6 @@
 # Changelog
 
-Changes to the SDLC compendium and its copy-in package. Format: Keep a Changelog. Versioning: the package version in `tools/build_package.py`.
+Changes to the SDLC compendium and its copy-in package. Format: Keep a Changelog. Versioning: the package version in `package/.agents/SDLC_VERSION`.
 
 ## [Unreleased]
 

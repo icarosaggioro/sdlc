@@ -2,78 +2,80 @@
 
 Practices for building, reviewing, shipping, and operating software in an organization of 1 to 15 engineers, with AI assistance as a normal part of the work. Derived from three reference projects, filled in with general practice where they are silent.
 
-Every practice is essential, with a **minimum form** a small team can adopt quickly and a **scale-up** note for later.
+Every practice is essential, with a **minimum form** a small team can adopt quickly and a **scale-up** note for later. Repos declare a `solo` or `team` profile; see guide 00.
 
-## The Package (copy into every project)
+## How This Repository Works
 
-`package/` is generated from this compendium and is what you copy into each repository: a root `AGENTS.md` pointer, general rules in `.agents/rules/instructions.md`, a project-owned `project.md`, the guides, templates, 13 `sdlc-*` skills, a PR template, and an advisory AI review workflow. It works with Antigravity, Codex, and OpenCode; no `CLAUDE.md`. Always-loaded cost is about 990 tokens per session.
+`package/` is the single source of truth **and** the thing you copy into each project. There is no build step: edit files in `package/`, then install.
 
-- How to adopt it, tool by tool and project by project: [docs/ADOPTING.md](docs/ADOPTING.md)
-- Build: `python3 tools/build_package.py` (generates and validates `package/`)
-- Install: `tools/install-package.ps1 -Target <repo>` (dry run by default)
-- History: [CHANGELOG.md](CHANGELOG.md)
+```
+package/            copy-in payload: AGENTS.md, .agents/ (rules, guides, skills, references), .github/
+tools/              install_package.py (cross-platform installer), check_package.py (validator)
+docs/ADOPTING.md    how to adopt it, tool by tool and project by project
+docs/background/    survey of the three reference projects, decisions, rollout analysis
+CHANGELOG.md        package versions
+```
 
-Edit the sources (`guides/`, `playbooks/`, `references/`, `package-src/`), never `package/` directly.
+An agent loads about **990 tokens** per session (`AGENTS.md`, `instructions.md`, `project.md`). The guides and skills are read on demand. It works with Antigravity, Codex, and OpenCode; there is no `CLAUDE.md`.
 
-## Start Here
+## Install
 
-1. [guides/00-principles-and-scope.md](guides/00-principles-and-scope.md): how to read the compendium.
-2. [playbooks/](playbooks/): the procedures a developer follows day to day.
-3. [references/R1-templates.md](references/R1-templates.md): copy-paste templates, including the AI code review workflow.
-4. [references/R4-open-decisions.md](references/R4-open-decisions.md): choices that still need your answer.
+Dry run first (changes nothing), then apply. Works on Windows, Linux, and macOS with Python 3.8 or newer.
 
-## Guides (normative)
+```
+python tools/install_package.py C:\WebApps\my-project            # Windows
+python3 tools/install_package.py ~/projects/my-project           # Linux, macOS
+python3 tools/install_package.py ~/projects/my-project --apply   # copy for real
+```
+
+It never overwrites `.agents/rules/project.md` or anything under `.github/`. Read [docs/ADOPTING.md](docs/ADOPTING.md) before the first install in an existing project.
+
+## Guides (in `package/.agents/guides/`)
 
 | # | Guide |
 |---|---|
-| 00 | [Principles and scope](guides/00-principles-and-scope.md) |
-| 01 | [Source control and branching](guides/01-source-control-and-branching.md) |
-| 02 | [Commits and pull requests](guides/02-commits-and-pull-requests.md) |
-| 03 | [Issues and planning](guides/03-issues-and-planning.md) |
-| 04 | [Code review](guides/04-code-review.md) |
-| 05 | [Definition of Done](guides/05-definition-of-done.md) |
-| 06 | [Testing strategy](guides/06-testing-strategy.md) |
-| 07 | [Quality gates and CI](guides/07-quality-gates-and-ci.md) |
-| 08 | [Dependencies and security](guides/08-dependencies-and-security.md) |
-| 09 | [Architecture decisions](guides/09-architecture-decisions.md) |
-| 10 | [Documentation](guides/10-documentation.md) |
-| 11 | [Versioning and release](guides/11-versioning-and-release.md) |
-| 12 | [Deployment and rollback](guides/12-deployment-and-rollback.md) |
-| 13 | [Data safety](guides/13-data-safety.md) |
-| 14 | [Operations and incidents](guides/14-operations-and-incidents.md) |
-| 15 | [AI-assisted development](guides/15-ai-assisted-development.md) |
-| 16 | [Roles and responsibilities](guides/16-roles-and-responsibilities.md) |
+| 00 | [Principles, scope, and profiles](package/.agents/guides/00-principles-and-scope.md) |
+| 01 | [Source control and branching](package/.agents/guides/01-source-control-and-branching.md) |
+| 02 | [Commits and pull requests](package/.agents/guides/02-commits-and-pull-requests.md) |
+| 03 | [Issues and planning](package/.agents/guides/03-issues-and-planning.md) |
+| 04 | [Code review](package/.agents/guides/04-code-review.md) |
+| 05 | [Definition of Done](package/.agents/guides/05-definition-of-done.md) |
+| 06 | [Testing strategy](package/.agents/guides/06-testing-strategy.md) |
+| 07 | [Quality gates and CI](package/.agents/guides/07-quality-gates-and-ci.md) |
+| 08 | [Dependencies and security](package/.agents/guides/08-dependencies-and-security.md) |
+| 09 | [Architecture decisions](package/.agents/guides/09-architecture-decisions.md) |
+| 10 | [Documentation](package/.agents/guides/10-documentation.md) |
+| 11 | [Versioning and release](package/.agents/guides/11-versioning-and-release.md) |
+| 12 | [Deployment and rollback](package/.agents/guides/12-deployment-and-rollback.md) |
+| 13 | [Data safety](package/.agents/guides/13-data-safety.md) |
+| 14 | [Operations and incidents](package/.agents/guides/14-operations-and-incidents.md) |
+| 15 | [AI-assisted development](package/.agents/guides/15-ai-assisted-development.md) |
+| 16 | [Roles and responsibilities](package/.agents/guides/16-roles-and-responsibilities.md) |
 
-## Playbooks
+## Skills (in `package/.agents/skills/`)
 
-| # | Playbook |
-|---|---|
-| S01 | [Start a task](playbooks/S01-start-a-task.md) |
-| S02 | [Implement a change](playbooks/S02-implement-a-change.md) |
-| S03 | [Open a pull request](playbooks/S03-open-a-pull-request.md) |
-| S04 | [Review a pull request](playbooks/S04-review-a-pull-request.md) |
-| S05 | [Fix a bug](playbooks/S05-fix-a-bug.md) |
-| S06 | [Hotfix production](playbooks/S06-hotfix-production.md) |
-| S07 | [Write an ADR](playbooks/S07-write-an-adr.md) |
-| S08 | [Update dependencies](playbooks/S08-update-dependencies.md) |
-| S09 | [Cut a release](playbooks/S09-cut-a-release.md) |
-| S10 | [Roll back a release](playbooks/S10-roll-back-a-release.md) |
-| S11 | [Respond to an incident](playbooks/S11-respond-to-an-incident.md) |
-| S12 | [Bootstrap a new repo](playbooks/S12-bootstrap-a-new-repo.md) |
-| S13 | [Use an AI agent on a task](playbooks/S13-use-an-ai-agent-on-a-task.md) |
+Thirteen procedures an agent follows for common tasks, named `sdlc-*`:
+`start-task`, `implement-change`, `open-pr`, `review-pr`, `fix-bug`, `hotfix`, `write-adr`, `update-dependencies`, `cut-release`, `rollback`, `incident`, `bootstrap-repo`, `use-ai-agent`.
 
-## References
+## References (in `package/.agents/references/`)
 
-- [R1 Templates](references/R1-templates.md)
-- [R2 Anti-patterns](references/R2-anti-patterns.md)
-- [R3 Evidence map](references/R3-evidence-map.md)
-- [R4 Open decisions](references/R4-open-decisions.md)
-- [R5 Rollout impact, solo profile, and context strategy](references/R5-rollout-and-context-strategy.md)
+- [R1 Templates](package/.agents/references/R1-templates.md): PR, issue, ADR, README, runbook, review workflow, Dependabot.
+- [R2 Anti-patterns](package/.agents/references/R2-anti-patterns.md)
 
-## Evidence
+## Background (not copied into projects)
 
-The survey behind the compendium is in [evidence/](evidence/README.md): one file per reference project and a cross-project matrix.
+- [Survey of the three reference projects](docs/background/evidence/README.md)
+- [R3 Evidence map](docs/background/R3-evidence-map.md): which guide rule comes from which project, and which is general practice.
+- [R4 Open decisions](docs/background/R4-open-decisions.md): decisions and their log.
+- [R5 Rollout impact, solo profile, and context strategy](docs/background/R5-rollout-and-context-strategy.md)
+
+## Maintaining the Package
+
+1. Edit files in `package/`.
+2. Bump `package/.agents/SDLC_VERSION` and add an entry to `CHANGELOG.md`.
+3. Run `python tools/check_package.py`.
+4. Install into the projects that should receive the update.
 
 ## Status
 
-First complete draft, 2026-10-12. Not yet reviewed by the team. Numbers such as 400-line PRs, a ten-minute CI target, and an eight-week window for promoting an AI review rule are proposals; see [R3](references/R3-evidence-map.md#not-supported-by-evidence).
+Numbers such as 400-line PRs, a ten-minute CI target, and one-business-day reviews are proposals; see [R3](docs/background/R3-evidence-map.md#not-supported-by-evidence). The installer has been tested on Windows only.

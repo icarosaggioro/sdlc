@@ -1,6 +1,6 @@
 # Adopting the SDLC Package
 
-How to inject the package into a project, tool by tool and project by project. The package is built from this compendium; the project folders were not touched while preparing it.
+How to inject the package into a project, tool by tool and project by project. The reference projects were not modified while preparing the package.
 
 ## What You Copy
 
@@ -18,16 +18,40 @@ AGENTS.md                              pointer for any agent tool
 .github/workflows/ci-codereview.yml   advisory AI review
 ```
 
-Always loaded by an agent: about **990 tokens** (`AGENTS.md`, `instructions.md`, `project.md`). Everything else is read on demand.
+An agent always loads about **990 tokens** (`AGENTS.md`, `instructions.md`, `project.md`). Everything else is read on demand.
 
-Use the script (dry run by default) or copy by hand:
+## Install
 
-```powershell
-.\tools\install-package.ps1 -Target C:\WebApps\<project>           # shows what would happen
-.\tools\install-package.ps1 -Target C:\WebApps\<project> -Apply    # copies
+The installer is one Python file with no dependencies. It runs the same way on Windows, Linux, and macOS. Use `python` or `py` on Windows and `python3` on Linux and macOS.
+
+```
+# 1. Dry run: shows what would happen, changes nothing
+python tools/install_package.py C:\WebApps\<project>          # Windows
+python3 tools/install_package.py ~/projects/<project>         # Linux, macOS
+
+# 2. Apply
+python tools/install_package.py C:\WebApps\<project> --apply
+python3 tools/install_package.py ~/projects/<project> --apply
 ```
 
-It never overwrites `project.md` or anything under `.github/`. On a first install, a differing package-owned file is reported as a **conflict** and skipped. On later updates (detected by `.agents/SDLC_VERSION`), package-owned files are replaced.
+Rules the installer follows:
+
+| Kind | Files | Behavior |
+|---|---|---|
+| Project-owned | `.agents/rules/project.md` | Never overwritten |
+| Templates | `.github/*` | Copied only when missing |
+| Package-owned | `AGENTS.md`, `instructions.md`, guides, references, `sdlc-*` skills | First install: a differing file is a **conflict** and is skipped (`--force` saves it as `.bak` and replaces it). Later updates (detected by `.agents/SDLC_VERSION`): replaced |
+
+The version marker is written only when no conflict is pending. Line endings are ignored when comparing, so a Windows checkout with CRLF does not look like a conflict. The exit code is 1 when a conflict remains, which makes it usable in scripts.
+
+You can also copy `package/` by hand. The installer only adds the safety rules.
+
+## Linux and macOS
+
+The package contents contain no OS-specific commands. The installer uses only `pathlib` and the standard library. It has been **tested on Windows only**; run the dry run once on a Linux or macOS machine before relying on it. Two things to know:
+
+- Windows Git may convert line endings (`autocrlf`); the installer and the checker tolerate that.
+- File names in the package are case-sensitive on Linux. They are already consistent (`SKILL.md`, `AGENTS.md`).
 
 ## Why Not `CLAUDE.md`
 
@@ -35,7 +59,7 @@ The projects are used with several tools, so the rules do not depend on one vend
 
 ## Per-Tool Notes (verify once)
 
-I could not test these tools from here. Treat them as expectations and confirm each once per tool by asking the agent: *"Which rule files and skills did you load for this repository?"*
+These tools were not tested from here. Treat the table as expectations and confirm each once per tool by asking the agent: *"Which rule files and skills did you load for this repository?"*
 
 | Tool | Expected behavior | If it does not work |
 |---|---|---|
@@ -51,17 +75,17 @@ Skill discovery may differ between tools. That is why `instructions.md` lists ev
 
 1. Run the installer in dry-run mode. Expect a **conflict** on `.agents/rules/instructions.md`.
 2. Move the project-specific parts of the existing `instructions.md` into `.agents/rules/project.md`: the stack constraints, the schema contract (`backend/livro-jogo-schema.json`), the documentation map, and the module scopes. Drop what the package now covers (language, git conventions, review, release steps) and move the workstation topology to `docs/dev-environment.md` (it already exists).
-3. Re-run with `-Apply -Force`. Delete the `.bak` after checking.
-4. Do **not** copy `ci-codereview.yml`: `ci-livrojogo-codereview.yml` already exists. Instead align it: pin `OCR_LLM_MODEL` with no `openrouter/free` fallback, and correct `X-Title=LoreVault ...` to `Lore Vault`.
+3. Re-run with `--apply --force`. Delete the `.bak` after checking.
+4. Do **not** rely on the package's `ci-codereview.yml`: `ci-livrojogo-codereview.yml` already exists, so the installer will add a second workflow. Delete the package copy, then align the existing one: pin `OCR_LLM_MODEL` with no `openrouter/free` fallback, and correct `X-Title=LoreVault ...` to `Lore Vault`.
 5. Make the Snyk step fail closed (guide 07).
 6. Keep the project skills (`go-live`, `remote-mobile-env`). `sdlc-cut-release` defers to `go-live`. `.skill-lock.json` is untouched.
 7. Set branch protection to require the CI checks and zero approvals.
 
 ### MusicMatch (`ships-to-users: no`, `team-profile: solo`)
 
-1. The existing `AGENTS.md` has only language rules, which `instructions.md` now covers. The installer reports a conflict; use `-Force` after moving anything unique into `project.md`.
-2. Fill `project.md` from `PROJECT_CONTEXT.md` (stack, architecture direction, EN-INT rule). Keep `PROJECT_CONTEXT.md` as the long document; link it from the docs map.
-3. Add CI using `sdlc-bootstrap-repo` (the package does not ship a stack-specific CI workflow). This is the largest gap.
+1. The existing `AGENTS.md` has only language rules, which `instructions.md` now covers. The installer reports a conflict; use `--force` after moving anything unique into `project.md`.
+2. Fill `project.md` from `PROJECT_CONTEXT.md` (stack, architecture direction, EN-INT rule). Keep `PROJECT_CONTEXT.md` as the long document and link it from the docs map.
+3. Add CI using the `sdlc-bootstrap-repo` skill (the package does not ship a stack-specific CI workflow). This is the largest gap.
 4. Fix the drift: the test count in `README.md` and `CHANGELOG.md`, the ADR count in the changelog, and Python 3.14 versus `>=3.11`.
 5. Add the review workflow and its secret and variable.
 
@@ -73,23 +97,21 @@ Skill discovery may differ between tools. That is why `instructions.md` lists ev
 
 ## New Projects
 
-Copy the package, fill `project.md`, then run the `sdlc-bootstrap-repo` skill.
+Install the package, fill `project.md`, then run the `sdlc-bootstrap-repo` skill.
 
 ## Updating the Package
 
-1. Edit the sources in this compendium (`guides/`, `playbooks/`, `references/R1` and `R2`, `package-src/`).
-2. Bump `VERSION` and `DATE` in `tools/build_package.py` and add a line to `CHANGELOG.md`.
-3. Run `python3 tools/build_package.py`. It fails if a link or a skill name drifted.
-4. Run the installer on each repo. Packages updates replace only package-owned files.
+1. Edit files in `package/`. It is the single source of truth.
+2. Bump `package/.agents/SDLC_VERSION` and add an entry to `CHANGELOG.md`.
+3. Run `python tools/check_package.py`. It fails on a missing file, a bad skill, a broken path mention, a Windows-only leftover, or a version that does not match the changelog.
+4. Run the installer on each repo that should receive the update. It replaces only package-owned files.
 
-`package/` is generated; never edit it by hand.
+## Background Documents
 
-## What Is Not in the Package
-
-`R3` (evidence map), `R4` (open decisions), and `R5` (rollout analysis) are about the organization and the three reference projects, not about any one repo. They stay here. The `evidence/` folder stays here too.
+`docs/background/` holds the survey of the three reference projects, the decisions log, the evidence map, and the rollout analysis. They explain why the rules look the way they do and are not copied into projects.
 
 ## Not Yet Covered
 
 - A stack-specific CI workflow (Python, Node, Flutter). `sdlc-bootstrap-repo` describes what it must contain.
-- Issue templates (optional in the solo profile). They are in `R1`.
-- A Dependabot file (the ecosystems differ per project). The snippet is in `R1`.
+- Issue templates (optional in the solo profile) and a Dependabot file. The snippets are in R1.
+- Testing on Linux and macOS.

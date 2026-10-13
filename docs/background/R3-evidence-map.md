@@ -1,6 +1,6 @@
 # R3. Evidence Map
 
-For each guide: what in the three reference projects grounds it, and what is **general practice filled in** because the projects have nothing on it. Evidence files are in `../evidence/`.
+For each guide: what in the three reference projects grounds it, and what is **general practice filled in** because the projects have nothing on it. Evidence files are in `evidence/`, next to this file.
 
 Legend: **LJ** LivroJogo, **MM** MusicMatch, **BM** Vibe Coding Benchmarks. **Grounded** means observed in at least one project. **General** means not observed; added from common practice.
 

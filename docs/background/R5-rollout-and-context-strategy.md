@@ -125,4 +125,4 @@ A ready skeleton is in R1, section 9. A filled-in slim version for a solo repo h
 
 1. The solo profile was adopted.
 2. Rules are tool-agnostic: a root `AGENTS.md` pointer, `.agents/rules/instructions.md` (general) and `.agents/rules/project.md` (per project), no `CLAUDE.md`.
-3. The playbooks were converted to `sdlc-*` skills and the whole thing is built into a copy-in package (`package/`).
+3. The playbooks were converted to `sdlc-*` skills, which are part of the copy-in package (`package/`, the single source of truth).
