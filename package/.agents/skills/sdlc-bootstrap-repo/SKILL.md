@@ -16,7 +16,7 @@ description: "Use when creating a new repository or adopting the SDLC package in
 **Code and checks**
 5. Define the runtime version in **one** place.
 6. Add lint, formatter, type checker, and test runner with the project's standard config.
-7. Add one local command that runs them all (for example `scripts/check-all.ps1` or `make check`).
+7. Add one local command that runs them all (for example `scripts/check` or `make check`).
 8. Add the CI workflow: install, lint, types, tests, build, dependency scan. Make it fail closed.
 9. Add Dependabot, weekly.
 

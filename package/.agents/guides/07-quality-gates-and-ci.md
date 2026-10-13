@@ -4,7 +4,7 @@
 
 1. **MUST** run CI on every pull request to `main` and on every push to `main`.
 2. **MUST** make these checks required for merge: **lint, type check, tests, build, dependency vulnerability scan**.
-3. **MUST** make CI run the same commands a developer runs locally. Provide one script (for example `scripts/check-all.ps1` or `make check`) that runs them in order.
+3. **MUST** make CI run the same commands a developer runs locally. Provide one script (for example `scripts/check` or `make check`) that runs them in order.
 4. **MUST** fail closed. A gate that cannot run (missing token, unreachable service) fails the job or is reported as explicitly skipped, never as a silent pass.
 5. **MUST** pin third-party actions and tools: an exact version or commit SHA for third-party actions, a major version at most for first-party ones. Never `latest` or a moving branch.
 6. **SHOULD** give each workflow the minimum `permissions` it needs.
