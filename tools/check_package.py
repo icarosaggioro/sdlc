@@ -65,8 +65,13 @@ def main():
         m = re.match(r'---\nname: (.+)\ndescription: "(.+)"\n---\n', f.read_text(encoding="utf-8"))
         if not m:
             problems.append("bad frontmatter in " + name)
-        elif m.group(1) != name:
-            problems.append("frontmatter name %r does not match folder %r" % (m.group(1), name))
+        else:
+            if m.group(1) != name:
+                problems.append("frontmatter name %r does not match folder %r" % (m.group(1), name))
+            if "<" in m.group(1) or ">" in m.group(1):
+                problems.append("skill name contains < or > (rejected by Claude Code): " + name)
+            if len(m.group(2)) > 1536:
+                problems.append("skill description over 1,536 chars (truncated by Claude Code): " + name)
     listed = set(re.findall(r"sdlc-[a-z]+(?:-[a-z]+)*", read(".agents/rules/instructions.md")))
     if listed != set(skill_dirs):
         problems.append("skills listed in instructions.md differ from folders: %s" % sorted(listed ^ set(skill_dirs)))

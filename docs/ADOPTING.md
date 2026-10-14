@@ -53,19 +53,39 @@ The package contents contain no OS-specific commands. The installer uses only `p
 - Windows Git may convert line endings (`autocrlf`); the installer and the checker tolerate that.
 - File names in the package are case-sensitive on Linux. They are already consistent (`SKILL.md`, `AGENTS.md`).
 
-## Why Not `CLAUDE.md`
+## Claude Code (`--harness claude`)
 
-The projects are used with several tools, so the rules do not depend on one vendor's filename. A root `AGENTS.md` is a short pointer to `.agents/rules/`, which is where the LivroJogo rules already live. If someone uses a tool that reads only `CLAUDE.md`, a one-line `CLAUDE.md` containing `@AGENTS.md` bridges it; it is not part of the package.
+The default layout is tool-agnostic: a root `AGENTS.md` pointer plus `.agents/`. For repos where Claude Code is used, add the harness option:
+
+```
+python tools/install_package.py <repo> --apply --harness claude
+```
+
+It adds a Claude layer **on top of** the generic one, which stays in place so other tools keep working in the same repo:
+
+| Created | Why |
+|---|---|
+| `CLAUDE.md` with two `@` imports (`instructions.md` and `project.md`) | Claude Code reads `AGENTS.md` only when no `CLAUDE.md` exists, so a `CLAUDE.md` must import the rules itself. Imports load at launch, with no extra tool call |
+| `.claude/skills/sdlc-*` (copies) | Claude Code discovers skills only in `.claude/skills/`, not in `.agents/skills/`. Copies, not symlinks: symlinks need administrator rights on Windows |
+
+An existing `CLAUDE.md` is **never modified**: the installer prints the two lines to add. The `.claude/skills` copies are package-owned and refreshed on every update, so do not edit them.
+
+Without `--harness claude`, recent Claude Code versions still read the root `AGENTS.md` pointer (per the documentation), but the agent then has to follow it to read the rules, and the skills are not discovered.
+
+**Cost in Claude Code:** about 990 tokens for the rules plus about 700 for the listing of the 13 skill names and descriptions (measured from the files). Skill bodies load only when a skill is invoked. The listing budget defaults to 1% of the context window, so a repo with many other skills may see the least-used descriptions dropped.
+
+**Verified** on 2026-10-14 with Claude Code 2.1.299, on a temporary install: imports from `.agents/rules/` load at launch, and with `.claude/skills` the session quotes a skill description exactly, while the generic layout alone does not expose it. Documentation: [memory](https://code.claude.com/docs/en/memory) and [skills](https://code.claude.com/docs/en/skills). Other versions were not tested.
 
 ## Per-Tool Notes (verify once)
 
-These tools were not tested from here. Treat the table as expectations and confirm each once per tool by asking the agent: *"Which rule files and skills did you load for this repository?"*
+Antigravity, Codex, and OpenCode were not tested from here, so treat their rows as expectations and confirm each once by asking the agent (Claude Code is covered in the section above): *"Which rule files and skills did you load for this repository?"*
 
 | Tool | Expected behavior | If it does not work |
 |---|---|---|
 | Google Antigravity | Loads `.agents/rules/*` (your existing files use `trigger: always_on`) and `.agents/skills/*` | Check the rule activation mode in its settings |
 | Codex | Reads the root `AGENTS.md`, which points to the rules | Ask it to read `.agents/rules/instructions.md` explicitly once |
 | OpenCode | Reads the root `AGENTS.md`, which points to the rules | Same as Codex |
+| Claude Code | Use `--harness claude` (see above) | Verified |
 
 Skill discovery may differ between tools. That is why `instructions.md` lists every skill name and its path, so any agent can open the right `SKILL.md` by hand.
 

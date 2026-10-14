@@ -10,7 +10,7 @@ Every practice is essential, with a **minimum form** a small team can adopt quic
 
 ```
 package/            copy-in payload: AGENTS.md, .agents/ (rules, guides, skills, references), .github/
-tools/              install_package.py (cross-platform installer), check_package.py (validator)
+tools/              install_package.py (cross-platform installer), check_package.py (validator), test_install_package.py
 docs/ADOPTING.md    how to adopt it, tool by tool and project by project
 docs/background/    survey of the three reference projects, decisions, rollout analysis
 CHANGELOG.md        package versions
@@ -26,7 +26,10 @@ Dry run first (changes nothing), then apply. Works on Windows, Linux, and macOS 
 python tools/install_package.py C:\WebApps\my-project            # Windows
 python3 tools/install_package.py ~/projects/my-project           # Linux, macOS
 python3 tools/install_package.py ~/projects/my-project --apply   # copy for real
+python3 tools/install_package.py ~/projects/my-project --apply --harness claude   # also add the Claude Code layer
 ```
+
+`--harness claude` adds a `CLAUDE.md` that imports the rules and copies the skills to `.claude/skills/`, on top of the generic layout (Claude Code reads neither `.agents/skills` nor `AGENTS.md` once a `CLAUDE.md` exists).
 
 It never overwrites `.agents/rules/project.md` or anything under `.github/`. Read [docs/ADOPTING.md](docs/ADOPTING.md) before the first install in an existing project.
 
@@ -73,9 +76,9 @@ Thirteen procedures an agent follows for common tasks, named `sdlc-*`:
 
 1. Edit files in `package/`.
 2. Bump `package/.agents/SDLC_VERSION` and add an entry to `CHANGELOG.md`.
-3. Run `python tools/check_package.py`.
+3. Run `python tools/check_package.py` and `python tools/test_install_package.py`.
 4. Install into the projects that should receive the update.
 
 ## Status
 
-Numbers such as 400-line PRs, a ten-minute CI target, and one-business-day reviews are proposals; see [R3](docs/background/R3-evidence-map.md#not-supported-by-evidence). The installer has been tested on Windows only.
+Numbers such as 400-line PRs, a ten-minute CI target, and one-business-day reviews are proposals; see [R3](docs/background/R3-evidence-map.md#not-supported-by-evidence). The installer has been tested on Windows only. The Claude Code layer was verified against Claude Code 2.1.299.
