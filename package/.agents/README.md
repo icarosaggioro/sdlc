@@ -18,6 +18,8 @@ Rules, guides, skills, and templates that guide the software development lifecyc
 
 Project-specific skills live next to the `sdlc-*` ones and keep their own names.
 
+If the repo was installed with `--harness claude`, it also has a `CLAUDE.md` (imports the two rules files) and `.claude/skills/sdlc-*`, which are copies of the skills above for Claude Code. Do not edit the copies; they are refreshed by the installer.
+
 ## Settings the review workflow needs
 
 - Secret `CI_OPENROUTER_API_KEY`.
