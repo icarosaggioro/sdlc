@@ -4,6 +4,12 @@ Changes to the SDLC compendium and its copy-in package. Format: Keep a Changelog
 
 ## [Unreleased]
 
+### Added
+- Skill `sdlc-review-tour`: the agent writes a reading guide for a PR or branch (intent, reading order, call sites, test gaps, spots worth a second look, files to skim) and never judges or posts. Decided in R6 (D19).
+
+### Changed
+- `sdlc-review-pr` reads non-trivial PRs from a local checkout with a tour, and uses `git range-diff` for the second round.
+
 ## [1.2.0] - 2026-10-14
 
 ### Added

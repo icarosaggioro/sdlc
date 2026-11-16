@@ -57,8 +57,8 @@ It never overwrites `.agents/rules/project.md` or anything under `.github/`. Rea
 
 ## Skills (in `package/.agents/skills/`)
 
-Thirteen procedures an agent follows for common tasks, named `sdlc-*`:
-`start-task`, `implement-change`, `open-pr`, `review-pr`, `fix-bug`, `hotfix`, `write-adr`, `update-dependencies`, `cut-release`, `rollback`, `incident`, `bootstrap-repo`, `use-ai-agent`.
+Fourteen procedures an agent follows for common tasks, named `sdlc-*`:
+`start-task`, `implement-change`, `open-pr`, `review-tour`, `review-pr`, `fix-bug`, `hotfix`, `write-adr`, `update-dependencies`, `cut-release`, `rollback`, `incident`, `bootstrap-repo`, `use-ai-agent`.
 
 ## References (in `package/.agents/references/`)
 
@@ -71,6 +71,7 @@ Thirteen procedures an agent follows for common tasks, named `sdlc-*`:
 - [R3 Evidence map](docs/background/R3-evidence-map.md): which guide rule comes from which project, and which is general practice.
 - [R4 Open decisions](docs/background/R4-open-decisions.md): decisions and their log.
 - [R5 Rollout impact, solo profile, and context strategy](docs/background/R5-rollout-and-context-strategy.md)
+- [R6 PR review tooling: options and recommendation](docs/background/R6-pr-review-tooling.md) (proposal)
 
 ## Maintaining the Package
 

@@ -12,7 +12,7 @@ AGENTS.md                              pointer for any agent tool
 .agents/rules/project.md               project-specific rules (you fill it in)
 .agents/guides/                        guides 00 to 16 (on demand)
 .agents/references/                    templates and anti-patterns
-.agents/skills/sdlc-*/SKILL.md         13 procedures
+.agents/skills/sdlc-*/SKILL.md         14 procedures
 .agents/SDLC_VERSION                   package version
 .github/pull_request_template.md
 .github/workflows/ci-codereview.yml   advisory AI review
@@ -72,7 +72,7 @@ An existing `CLAUDE.md` is **never modified**: the installer prints the two line
 
 Without `--harness claude`, recent Claude Code versions still read the root `AGENTS.md` pointer (per the documentation), but the agent then has to follow it to read the rules, and the skills are not discovered.
 
-**Cost in Claude Code:** about 990 tokens for the rules plus about 700 for the listing of the 13 skill names and descriptions (measured from the files). Skill bodies load only when a skill is invoked. The listing budget defaults to 1% of the context window, so a repo with many other skills may see the least-used descriptions dropped.
+**Cost in Claude Code:** about 990 tokens for the rules plus about 750 for the listing of the 14 skill names and descriptions (measured from the files). Skill bodies load only when a skill is invoked. The listing budget defaults to 1% of the context window, so a repo with many other skills may see the least-used descriptions dropped.
 
 **Verified** on 2026-10-14 with Claude Code 2.1.299, on a temporary install: imports from `.agents/rules/` load at launch, and with `.claude/skills` the session quotes a skill description exactly, while the generic layout alone does not expose it. Documentation: [memory](https://code.claude.com/docs/en/memory) and [skills](https://code.claude.com/docs/en/skills). Other versions were not tested.
 
