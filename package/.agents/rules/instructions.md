@@ -47,4 +47,4 @@ It runs automatically on ready PRs and is advisory only. The final reviewer tria
 
 ## Skills
 When starting one of these kinds of task, open `.agents/skills/<name>/SKILL.md` and follow it:
-sdlc-start-task · sdlc-implement-change · sdlc-open-pr · sdlc-review-pr · sdlc-fix-bug · sdlc-hotfix · sdlc-write-adr · sdlc-update-dependencies · sdlc-cut-release · sdlc-rollback · sdlc-incident · sdlc-bootstrap-repo · sdlc-use-ai-agent
+sdlc-start-task · sdlc-implement-change · sdlc-open-pr · sdlc-review-tour · sdlc-review-pr · sdlc-fix-bug · sdlc-hotfix · sdlc-write-adr · sdlc-update-dependencies · sdlc-cut-release · sdlc-rollback · sdlc-incident · sdlc-bootstrap-repo · sdlc-use-ai-agent

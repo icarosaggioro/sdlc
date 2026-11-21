@@ -29,7 +29,8 @@ Record each decision here when made:
 | 2026-10-12 | D4 AI review status | Advisory permanently, never a gate | Maintainer | Reason: overhead on individuals |
 | 2026-10-12 | Solo profile | Adopted, with `team-profile` and `ships-to-users` as independent switches | Maintainer | Overhead concern for one-engineer projects |
 | 2026-10-12 | D12 triage | Final-review engineer triages at approval time | Maintainer | Review runs automatically on ready-for-review |
+| 2026-11-16 | D19 review tooling | No review tool that needs a subscription. Build the review tour as a package skill (`sdlc-review-tour`) instead of adopting GitLens Pro. GitLens Community stays optional on a workstation, never required by the package | Maintainer | A subscription is a dependency, however small the price. See R6 Part 10 |
 
 ## Still Open
 
-D3, D5 to D11, and D14 keep their proposed defaults. For the solo profile and its effect on D1 and D2, see [R5](R5-rollout-and-context-strategy.md).
+D3, D5 to D11, and D14 keep their proposed defaults. D15 to D18 (review tooling) are proposed in [R6](R6-pr-review-tooling.md#part-7-decisions-to-record-in-r4). For the solo profile and its effect on D1 and D2, see [R5](R5-rollout-and-context-strategy.md).

@@ -9,6 +9,7 @@ description: "Use when asked to review a pull request. Read the description and 
 
 1. **Respond within one business day.** If you cannot, say so and name someone else.
 2. Read the description and the linked issue first. Do you understand what this should do?
+   For anything beyond a trivial change, check the PR out locally (a worktree keeps your own work untouched) and ask the agent for a tour (`sdlc-review-tour`). Read in the order it gives, in the editor, with go-to-definition at hand.
 3. Check CI. If it is red, ask the author to fix it before you invest time.
 4. Read the AI review summary as a hint list, not as a verdict.
 5. Read the **tests first.** Do they describe the intended behavior and fail without the change?
@@ -21,7 +22,7 @@ description: "Use when asked to review a pull request. Read the description and 
 7. Run it if the change is risky or visual. Reading is not enough for UI or deployment changes.
 8. Label comments: `blocking`, `suggestion`, `question`.
 9. Decide explicitly: **Approve**, **Approve with comments**, or **Request changes**.
-10. After the author responds, re-check only what changed.
+10. After the author responds, re-check only what changed: `git range-diff <base> <old-tip> <new-tip>`, or a second-round tour.
 
 **Never:** approve something you do not understand, or approve because the AI review is clean. In the team profile, never approve your own PR.
 
